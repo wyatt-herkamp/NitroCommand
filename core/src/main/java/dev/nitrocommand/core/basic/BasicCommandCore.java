@@ -1,9 +1,6 @@
 package dev.nitrocommand.core.basic;
 
-import dev.nitrocommand.core.BasicCommandParser;
-import dev.nitrocommand.core.CommandCore;
-import dev.nitrocommand.core.NitroCMD;
-import dev.nitrocommand.core.NitroSubCommand;
+import dev.nitrocommand.core.*;
 import dev.nitrocommand.core.annotations.*;
 import dev.nitrocommand.core.exceptions.InvalidCommandException;
 import me.kingtux.simpleannotation.MethodFinder;
@@ -11,9 +8,37 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class BasicCommandCore implements CommandCore {
     private BasicCommandParser parser = new BasicCommandParser();
+    private List<ArgumentParser> parsers = new ArrayList<>();
+
+    public BasicCommandCore() {
+        NitroCMD.INTERNAL_THREAD_POOL.submit(this::locateAllArgumentParsersAndCreate);
+    }
+
+    private void locateAllArgumentParsersAndCreate() {
+        Reflections reflections = new Reflections("dev.nitrocommand");
+        for (Class<? extends ArgumentParser> t : reflections.getSubTypesOf(ArgumentParser.class)) {
+            try {
+
+                if (Utils.contructorExists(t, CommandCore.class)) {
+                    ArgumentParser parser = t.getConstructor(CommandCore.class).newInstance(this);
+                    registerArgumentParser(parser);
+
+                } else {
+                    ArgumentParser parser = t.getConstructor().newInstance();
+                    registerArgumentParser(parser);
+                }
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                NitroCMD.LOGGER.warn("Unable to create ArgumentParser", e);
+            }
+
+        }
+    }
 
     protected boolean executeCommand(String message, Object... otherArguments) {
         NitroSubCommand command = parser.locateCommand(message);
@@ -21,7 +46,7 @@ public abstract class BasicCommandCore implements CommandCore {
             return false;
         }
 
-        parser.executeCommand(command, BasicCommandParser.getArguments(message, command, command.method().getParameters(), otherArguments));
+        parser.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), otherArguments, this));
 
         return true;
     }
@@ -84,5 +109,16 @@ public abstract class BasicCommandCore implements CommandCore {
                 NitroCMD.LOGGER.error("Unable to initiate \"" + s.getName() + "\".", e);
             }
         }
+    }
+
+    @Override
+    public void registerArgumentParser(ArgumentParser parser) {
+        NitroCMD.LOGGER.debug("Registering ArgumentParser " + parser.getClass().getCanonicalName());
+        parsers.add(parser);
+    }
+
+    @Override
+    public ArgumentParser getArgumentParser(Class<?> type) {
+        return parsers.stream().filter(c -> c.getType().isAssignableFrom(type)).findFirst().get();
     }
 }

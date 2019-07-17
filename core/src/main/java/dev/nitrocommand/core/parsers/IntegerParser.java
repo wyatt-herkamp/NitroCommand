@@ -4,6 +4,8 @@ import dev.nitrocommand.core.ArgumentParser;
 
 
 public class IntegerParser implements ArgumentParser<Integer> {
+
+
     @Override
     public Integer parse(String s) {
         return Integer.parseInt(s);

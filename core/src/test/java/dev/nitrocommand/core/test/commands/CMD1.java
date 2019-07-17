@@ -11,13 +11,13 @@ public class CMD1 {
     }
 
     @SubCommand(format = "{username} *")
-    public void msg(@CommandArgument(key = "username") String username, @CommandArgument(key = "*") String msg) {
+    public void msg(@CommandArgument("username") String username, @CommandArgument( "*") String msg) throws Exception {
       System.out.println(username + ": " + msg);
 
     }
 
     @SubCommand(format = "all *")
-    public void msgAll(@CommandArgument(key = "*") String msg) {
+    public void msgAll(@CommandArgument("*") String msg) throws Exception {
 
     }
 }

@@ -14,5 +14,5 @@ public @interface CommandArgument {
      *
      * @return the key
      */
-    String key();
+    String value();
 }

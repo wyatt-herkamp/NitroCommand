@@ -60,4 +60,8 @@ public class JDA3CommandCore extends BasicCommandCore implements EventListener {
         }
         return false;
     }
+
+    public JDA getJDA() {
+        return jda;
+    }
 }
