@@ -1,27 +1,36 @@
 package dev.nitrocommand.jda3;
 
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class JDAController {
-    private Message message;
+    private GuildMessageReceivedEvent event;
 
-    public JDAController(Message message) {
-        this.message = message;
+    public JDAController(GuildMessageReceivedEvent message) {
+        this.event = message;
     }
 
     public Member getAuthor() {
-        return message.getMember();
+        return event.getMember();
     }
 
     public TextChannel getTextChannel() {
-        return message.getTextChannel();
+        return event.getMessage().getTextChannel();
     }
 
     public Guild getGuild() {
-        return message.getGuild();
+        return event.getGuild();
     }
 
     public Message getMessage() {
-        return message;
+        return event.getMessage();
+    }
+
+    public GuildMessageReceivedEvent getEvent() {
+        return event;
+    }
+
+    public Object[] toArray() {
+        return new Object[]{event.getAuthor(), getTextChannel(), getGuild(), event, this};
     }
 }

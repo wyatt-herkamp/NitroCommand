@@ -3,7 +3,7 @@ package dev.nitrocommand.core.basic;
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
 import dev.nitrocommand.core.annotations.BaseCommand;
-import dev.nitrocommand.core.annotations.Permission;
+import dev.nitrocommand.core.annotations.NitroPermission;
 import dev.nitrocommand.core.annotations.SubCommand;
 import dev.nitrocommand.core.annotations.SubCommands;
 
@@ -32,8 +32,8 @@ public class BasicSubCommand implements NitroSubCommand {
             //TODO throw error
 
         }
-        if (method.getAnnotation(Permission.class) != null) {
-            permission = method.getAnnotation(Permission.class).permission();
+        if (method.getAnnotation(NitroPermission.class) != null) {
+            permission = method.getAnnotation(NitroPermission.class).permission();
         } else {
             permission = command.getPermission();
         }

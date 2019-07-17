@@ -2,7 +2,7 @@ package dev.nitrocommand.core.basic;
 
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
-import dev.nitrocommand.core.annotations.Permission;
+import dev.nitrocommand.core.annotations.NitroPermission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +22,8 @@ public class BasicCommandObject implements NitroCommandObject {
         this.aliases = aliases;
         this.baseCommand = baseCommand;
         this.value = value;
-        if (value.getClass().getAnnotation(Permission.class) != null) {
-            permission = value.getClass().getAnnotation(Permission.class).permission();
+        if (value.getClass().getAnnotation(NitroPermission.class) != null) {
+            permission = value.getClass().getAnnotation(NitroPermission.class).permission();
         }
     }
 

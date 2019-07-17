@@ -8,10 +8,24 @@
     <artifactId>NitroCommand</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>https://nitrocommand.dev</url>
     <modules>
         <module>core</module>
         <module>jda3</module>
     </modules>
+    <scm>
+        <url>https://github.com/wherkamp/NitroCommand</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Wyatt Herkamp</name>
+            <email>wherkamp@kingtux.me</email>
+            <url>https://kingtux.me</url>
+        </developer>
+        <developer>
+            <name>Peter</name>
+        </developer>
+    </developers>
     <distributionManagement>
         <repository>
             <id>kingtux-repo</id>

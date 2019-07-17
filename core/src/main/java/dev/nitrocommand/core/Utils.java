@@ -5,6 +5,10 @@ import dev.nitrocommand.core.annotations.CommandArgument;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
+/**
+ * These are internal utils for NitroCommand
+ * Probably shouldnt use unless you know what you are doing
+ */
 public class Utils {
     public static Object[] getArguments(String message, NitroSubCommand command, Parameter[] parameters, Object[] otherArguments, CommandCore commandCore) {
         final Object[] arguments = new Object[parameters.length];
