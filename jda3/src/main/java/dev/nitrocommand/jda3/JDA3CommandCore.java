@@ -1,9 +1,6 @@
 package dev.nitrocommand.jda3;
 
-import dev.nitrocommand.core.CommandParser;
-import dev.nitrocommand.core.NitroCMD;
-import dev.nitrocommand.core.NitroSubCommand;
-import dev.nitrocommand.core.Utils;
+import dev.nitrocommand.core.*;
 import dev.nitrocommand.core.basic.BasicCommandCore;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
@@ -56,13 +53,14 @@ public class JDA3CommandCore extends BasicCommandCore<TextChannel> implements Ev
             return;
         }
         String newMessage = stripCommand(message).substring(commandBase.length());
-        NitroSubCommand command = CommandParser.locateSubCommand(newMessage, getCommand(commandBase));
+        NitroCommandObject object = getCommand(commandBase);
+        NitroSubCommand command = CommandParser.locateSubCommand(newMessage, object);
         if (command == null) {
-            NitroCMD.LOGGER.debug("Command Not Found: " + message);
-            return;
+            command = object.getBaseExecutor();
         }
         if (!command.requiredPermission().isEmpty()) {
-            Permission permission = Arrays.stream(Permission.values()).filter(p -> p.name().equalsIgnoreCase(command.requiredPermission())).findFirst().orElse(Permission.MESSAGE_WRITE);
+            NitroSubCommand finalCommand = command;
+            Permission permission = Arrays.stream(Permission.values()).filter(p -> p.name().equalsIgnoreCase(finalCommand.requiredPermission())).findFirst().orElse(Permission.MESSAGE_WRITE);
             if (!controller.getAuthor().hasPermission(permission)) {
                 controller.getTextChannel().sendMessage("Missing Permission Boy").queue();
                 //TODO error missing permission

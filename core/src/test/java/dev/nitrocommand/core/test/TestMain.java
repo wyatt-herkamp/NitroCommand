@@ -15,6 +15,7 @@ public class TestMain {
         testCommandCore.registerCommand(new CMD1());
         //Test Commands
         testCommandCore.execute("msg bobby How are you doing?");
+        testCommandCore.execute("bobby");
 
         //TODO use JUnit Tests to check if it works easily
     }

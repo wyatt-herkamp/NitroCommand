@@ -27,18 +27,19 @@ public class CommandParser {
      */
     public static NitroSubCommand locateSubCommand(String message, NitroCommandObject object) {
         NitroCMD.LOGGER.debug(String.format("Parsing: \"%s\".", message));
-        if (message.split(" ").length == 0) return null;
+
+        if (message.length()==0||message.split(" ").length == 0 ) return null;
 
         List<NitroSubCommand> possibilities = new ArrayList<>();
         for (NitroSubCommand sub : object.subCommands()) {
             //for (String alias : object.aliases()) {
-            for (String string : sub.formats()) {
-                string = convertToRegex(string);
-//alias + " "+
-                if (message.matches(string)) {
-                    possibilities.add(sub);
+                for (String string : sub.formats()) {
+                    string = convertToRegex(string);
+
+                    if (message.matches(/*alias + " " + */string)) {
+                        possibilities.add(sub);
+                    }
                 }
-            }
             //}
         }
 
@@ -47,9 +48,9 @@ public class CommandParser {
         Map<Integer, NitroSubCommand> cascade = new HashMap<>();
 
         for (NitroSubCommand sub : possibilities) {
-            for (String firstFormat : object.aliases()) {
+            //for (String firstFormat : object.aliases()) {
                 for (String format : sub.formats()) {
-                    format = convertToRegex(firstFormat + " " + format);
+                    format = convertToRegex(/*firstFormat + " " + */format);
 
                     Matcher matcher = Pattern.compile(format).matcher(message);
                     if (!matcher.matches()) continue;
@@ -62,7 +63,7 @@ public class CommandParser {
 
                     cascade.put(new LevenshteinDistance().apply(newMessage, format), sub);
                 }
-            }
+            //}
         }
         if (cascade.isEmpty()) return null;
         return cascade.get(Collections.min(cascade.keySet()));

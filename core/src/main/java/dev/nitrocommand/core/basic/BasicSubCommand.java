@@ -28,9 +28,10 @@ public class BasicSubCommand implements NitroSubCommand {
         } else if (method.getAnnotation(SubCommand.class) != null) {
             formats = new String[1];
             formats[0] = method.getAnnotation(SubCommand.class).format();
-        } else if (method.getAnnotation(BaseCommand.class) == null) {
-            //TODO throw error
+        } else if (method.getAnnotation(BaseCommand.class) !=null) {
 
+            formats = new String[1];
+            formats[0] = "";
         }
         if (method.getAnnotation(NitroPermission.class) != null) {
             permission = method.getAnnotation(NitroPermission.class).permission();

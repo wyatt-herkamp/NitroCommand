@@ -27,14 +27,20 @@ public class Utils {
             } else {
                 if (argument != null) {
                     ArgumentParser parser = commandCore.getArgumentParser(parameters[i].getType());
+                    if (parser == null) {
+                        arguments[i] = null;
+                        try {
+                            throw new IllegalArgumentException("No argument parser for this type");
+                        } catch (IllegalArgumentException e) {
+                            NitroCMD.LOGGER.error("Unable to get value for argument", e);
+                        }
+                    }
                     arguments[i] = parser.parse(parseVariableValue(argument.value(), message, format));
                 } else {
                     arguments[i] = getByType(otherArguments, parameters[i].getType());
                 }
             }
         }
-
-
         return arguments;
     }
 
@@ -93,8 +99,7 @@ public class Utils {
                     num = count;
             }
         }
-
-        return message.split(" ")[num];
+        return message.split(" ")[num - 1];
     }
 
     public static boolean contructorExists(Class<?> t, Class<?>... clazzes) {

@@ -14,8 +14,6 @@ public class TestCommandCore extends BasicCommandCore<PrintStream> {
         return "test";
     }
 
-
-
     @Override
     public void sendMessage(PrintStream senderObject, String message) {
         senderObject.println(message);
@@ -27,12 +25,11 @@ public class TestCommandCore extends BasicCommandCore<PrintStream> {
 
     private void executeCommand(String message) {
         String base = message.split(" ")[0];
-        NitroSubCommand command = CommandParser.locateSubCommand(message.substring(base.length()+1), getCommand(base));
+        NitroSubCommand command = CommandParser.locateSubCommand(message.substring(base.length()), getCommand(base));
         if (command == null) {
             return;
         }
 
         Utils.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), new Object[0], this));
-
     }
 }
