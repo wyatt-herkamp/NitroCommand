@@ -2,6 +2,7 @@ package dev.nitrocommand.core;
 
 import dev.nitrocommand.core.annotations.CommandArgument;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
@@ -103,5 +104,15 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static void executeCommand(NitroSubCommand command, Object... paramSet) {
+        try {
+            command.method().invoke(command.command().value(), paramSet);
+        } catch (IllegalAccessException e) {
+            NitroCMD.LOGGER.error("Unable to access" + command.methodName(), e);
+        } catch (InvocationTargetException e) {
+            NitroCMD.LOGGER.error("Unable to invoke " + command.methodName(), e.getCause());
+        }
     }
 }

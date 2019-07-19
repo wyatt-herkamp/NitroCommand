@@ -32,4 +32,6 @@ public interface NitroCommandObject extends Iterable<NitroSubCommand> {
     Object value();
 
     String getPermission();
+
+    String format();
 }

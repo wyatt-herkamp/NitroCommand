@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class BasicCommandCore implements CommandCore {
-    protected BasicCommandParser parser = new BasicCommandParser();
+public abstract class BasicCommandCore<T> implements CommandCore<T> {
     protected List<ArgumentParser> parsers = new ArrayList<>();
+    protected List<NitroCommandObject> commandObjects = new ArrayList<>();
 
     public BasicCommandCore() {
         NitroCMD.INTERNAL_THREAD_POOL.submit(this::locateAllArgumentParsersAndCreate);
@@ -42,9 +42,8 @@ public abstract class BasicCommandCore implements CommandCore {
     }
 
 
-
     @Override
-    public void registerCommand(Object object) {
+    public NitroCommandObject registerCommand(Object object) {
         Validate.notNull(object, "Warning a command object cant be null");
 
         NitroCommand command = object.getClass().getAnnotation(NitroCommand.class);
@@ -58,7 +57,7 @@ public abstract class BasicCommandCore implements CommandCore {
             throw new InvalidCommandException("All commands must have a method with the annotation @BaseCommand.");
         }
         //Build the Command Object
-        BasicCommandObject commandObject = new BasicCommandObject(command.command(), null, object);
+        BasicCommandObject commandObject = new BasicCommandObject(command.command(), null, command.format(), object);
         commandObject.setBaseCommand(new BasicSubCommand(baseMethod, commandObject));
         commandObject.setDescription(command.description());
         //Get all command methods and add
@@ -70,7 +69,8 @@ public abstract class BasicCommandCore implements CommandCore {
         if (NitroCMD.LOGGER.isDebugEnabled())
             NitroCMD.LOGGER.debug(String.format("Registering \"%s\".", commandObject.toString()));
         //Add to parser
-        parser.add(commandObject);
+        commandObjects.add(commandObject);
+        return commandObject;
     }
 
     @Override
@@ -120,5 +120,29 @@ public abstract class BasicCommandCore implements CommandCore {
     @Override
     public ArgumentParser getArgumentParser(Class<?> type) {
         return parsers.stream().filter(c -> c.getType().isAssignableFrom(type)).findFirst().get();
+    }
+
+    @Override
+    public List<NitroCommandObject> registeredCommands() {
+        return commandObjects;
+    }
+
+    @Override
+    public boolean doesCommandExist(String command) {
+        return getCommand(command) != null;
+    }
+
+    @Override
+    public NitroCommandObject getCommand(String command) {
+        Validate.notNull(command, "Command must not be null");
+        for (NitroCommandObject object : commandObjects) {
+            for (String string : object.aliases()) {
+                if (string.equalsIgnoreCase(command)) {
+                    return object;
+                }
+            }
+        }
+
+        return null;
     }
 }

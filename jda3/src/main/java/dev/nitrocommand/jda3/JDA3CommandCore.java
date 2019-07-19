@@ -1,22 +1,22 @@
 package dev.nitrocommand.jda3;
 
-import dev.nitrocommand.core.BasicCommandParser;
+import dev.nitrocommand.core.CommandParser;
 import dev.nitrocommand.core.NitroCMD;
 import dev.nitrocommand.core.NitroSubCommand;
 import dev.nitrocommand.core.Utils;
 import dev.nitrocommand.core.basic.BasicCommandCore;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 
-import java.lang.annotation.Retention;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JDA3CommandCore extends BasicCommandCore implements EventListener {
+public class JDA3CommandCore extends BasicCommandCore<TextChannel> implements EventListener {
     private JDA jda;
     private String prefix = "/";
     private Map<Long, String> customPrefixes = new HashMap<>();
@@ -32,6 +32,12 @@ public class JDA3CommandCore extends BasicCommandCore implements EventListener {
         return "JDA3";
     }
 
+
+    @Override
+    public void sendMessage(TextChannel senderObject, String message) {
+        senderObject.sendMessage(message).queue();
+    }
+
     @Override
     public void onEvent(Event event) {
         if (event instanceof GuildMessageReceivedEvent) {
@@ -44,13 +50,15 @@ public class JDA3CommandCore extends BasicCommandCore implements EventListener {
     }
 
     private void executeCommand(String message, JDAController controller) {
-        if(!parser.doesCommandExist(message.split(" ")[0])){
-            NitroCMD.LOGGER.debug("No base command found: "+ message);
+        String commandBase = message.split(" ")[0];
+        if (!doesCommandExist(commandBase)) {
+            NitroCMD.LOGGER.debug("No base command found: " + message);
             return;
         }
-        NitroSubCommand command = parser.locateCommand(message);
+        String newMessage = stripCommand(message).substring(commandBase.length());
+        NitroSubCommand command = CommandParser.locateSubCommand(newMessage, getCommand(commandBase));
         if (command == null) {
-            NitroCMD.LOGGER.debug("Command Not Found: "+ message);
+            NitroCMD.LOGGER.debug("Command Not Found: " + message);
             return;
         }
         if (!command.requiredPermission().isEmpty()) {
@@ -61,7 +69,7 @@ public class JDA3CommandCore extends BasicCommandCore implements EventListener {
                 return;
             }
         }
-        parser.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), controller.toArray(), this));
+        Utils.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), controller.toArray(), this));
 
     }
 

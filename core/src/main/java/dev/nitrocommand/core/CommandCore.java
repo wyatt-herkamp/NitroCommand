@@ -1,7 +1,9 @@
 package dev.nitrocommand.core;
 
-public interface CommandCore {
-    void registerCommand(Object object);
+import java.util.List;
+
+public interface CommandCore<T> {
+    NitroCommandObject registerCommand(Object object);
 
     /**
      * This will look for all Classes in a package to register commands in.
@@ -24,4 +26,13 @@ public interface CommandCore {
     void registerArgumentParser(ArgumentParser parser);
 
     String getName();
+
+
+    List<NitroCommandObject> registeredCommands();
+
+    boolean doesCommandExist(String command);
+
+    NitroCommandObject getCommand(String command);
+
+    void sendMessage(T senderObject, String message);
 }

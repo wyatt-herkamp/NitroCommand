@@ -12,14 +12,15 @@ import java.util.List;
 public class BasicCommandObject implements NitroCommandObject {
     private List<NitroSubCommand> subCommands;
     private String[] aliases;
-    private String description;
+    private String description, format;
     private NitroSubCommand baseCommand;
     private Object value;
     private String permission = "";
 
-    public BasicCommandObject(List<NitroSubCommand> subCommands, String[] aliases, NitroSubCommand baseCommand, Object value) {
+    public BasicCommandObject(List<NitroSubCommand> subCommands, String[] aliases, String format, NitroSubCommand baseCommand, Object value) {
         this.subCommands = subCommands;
         this.aliases = aliases;
+        this.format = format;
         this.baseCommand = baseCommand;
         this.value = value;
         if (value.getClass().getAnnotation(NitroPermission.class) != null) {
@@ -27,8 +28,8 @@ public class BasicCommandObject implements NitroCommandObject {
         }
     }
 
-    public BasicCommandObject(String[] aliases, NitroSubCommand baseCommand, Object value) {
-        this(new ArrayList<>(), aliases, baseCommand, value);
+    public BasicCommandObject(String[] aliases, NitroSubCommand baseCommand, String format, Object value) {
+        this(new ArrayList<>(), aliases, format, baseCommand, value);
     }
 
     @Override
@@ -59,6 +60,11 @@ public class BasicCommandObject implements NitroCommandObject {
     @Override
     public String getPermission() {
         return permission;
+    }
+
+    @Override
+    public String format() {
+        return format;
     }
 
     @Override
