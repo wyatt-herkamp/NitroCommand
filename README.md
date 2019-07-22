@@ -5,7 +5,7 @@
 
 #### Information
 
-NitroCommand is a simple and easy-to-use and extensible command framework.
+NitroCommand is a simple, easy-to-use and extensible command framework.
 
 This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) and [MonoCommand](https://github.com/Monology/MonoCommand)
 
