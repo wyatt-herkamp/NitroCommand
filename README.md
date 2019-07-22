@@ -3,11 +3,13 @@
 #### Implementations
 1. JDA3
 
+2. Bukkit
+
 #### Information
 
 NitroCommand is a simple, easy-to-use and extensible command framework.
 
-This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) and [MonoCommand](https://github.com/Monology/MonoCommand)
+This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) and [MonoCommand](https://github.com/Monology/MonoCommand).
 
 #### Developers
 - [Wyatt](https://github.com/wherkamp)
