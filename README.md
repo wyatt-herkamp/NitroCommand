@@ -27,7 +27,7 @@ This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) a
     <dependency>
        <groupId>dev.nitrocommand</groupId>
        <artifactId>core</artifactId>
-       <!---Make sure you use Latest Version!-->
+       <!--- Make sure to use the latest version! -->
        <version>1.0-SNAPSHOT</version>
        <scope>compile</scope>
     </dependency>
