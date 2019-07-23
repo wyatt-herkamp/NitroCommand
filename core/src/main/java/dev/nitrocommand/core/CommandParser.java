@@ -32,40 +32,40 @@ public class CommandParser {
 
         List<NitroSubCommand> possibilities = new ArrayList<>();
         for (NitroSubCommand sub : object.subCommands()) {
-            //for (String alias : object.aliases()) {
-                for (String string : sub.formats()) {
-                    string = convertToRegex(string);
+            for (String string : sub.formats()) {
+                string = convertToRegex(string);
 
-                    if (message.matches(/*alias + " " + */string)) {
-                        possibilities.add(sub);
-                    }
+                if (message.matches(/*alias + " " + */string)) {
+                    possibilities.add(sub);
                 }
-            //}
+            }
         }
 
         if (possibilities.size() == 1) return possibilities.get(0);
 
         Map<Integer, NitroSubCommand> cascade = new HashMap<>();
+        
+        LevenshteinDistance l = new LevenshteinDistance();
 
         for (NitroSubCommand sub : possibilities) {
-            //for (String firstFormat : object.aliases()) {
-                for (String format : sub.formats()) {
-                    format = convertToRegex(/*firstFormat + " " + */format);
+            for (String format : sub.formats()) {
+                format = convertToRegex(/*firstFormat + " " + */format);
 
-                    Matcher matcher = Pattern.compile(format).matcher(message);
-                    if (!matcher.matches()) continue;
+                Matcher matcher = Pattern.compile(format).matcher(message);
+                if (!matcher.matches()) continue;
 
-                    String newMessage = message;
+                String newMessage = message;
 
-                    for (int i = 1; i < matcher.groupCount() - 1; i++) {
-                        newMessage = newMessage.replaceAll(matcher.group(i), "(.*[^ ])");
-                    }
-
-                    cascade.put(new LevenshteinDistance().apply(newMessage, format), sub);
+                for (int i = 1; i < matcher.groupCount() - 1; i++) {
+                    newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
-            //}
+
+                cascade.put(l.apply(newMessage, format), sub);
+            }
         }
+        
         if (cascade.isEmpty()) return null;
+        
         return cascade.get(Collections.min(cascade.keySet()));
     }
 
