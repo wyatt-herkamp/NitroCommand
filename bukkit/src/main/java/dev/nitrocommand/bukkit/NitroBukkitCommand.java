@@ -11,8 +11,9 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class NitroBukkitCommand extends Command {
-    private BukkitCommandCore core;
-    private NitroCommandObject object;
+    
+    private final BukkitCommandCore core;
+    private final NitroCommandObject object;
 
     protected NitroBukkitCommand(String name, String description, String usageMessage, List<String> aliases, BukkitCommandCore core, NitroCommandObject commandObject) {
         super(name, description, usageMessage, aliases);
@@ -22,27 +23,24 @@ public class NitroBukkitCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
+        
         String message = String.join(" ", strings);
+        NitroSubCommand subCommand = (strings.length == 0) ? object.getBaseExecutor() : CommandParser.locateSubCommand(message, object);
 
-        NitroSubCommand subCommand;
-        if (strings.length == 0) {
-            subCommand = object.getBaseExecutor();
-
-        } else {
-            subCommand = CommandParser.locateSubCommand(message, object);
-        }
         if (subCommand == null) {
             subCommand = object.getBaseExecutor();
             //TODO base command
         }
+        
         for (Class<?> type : subCommand.method().getParameterTypes()) {
-            if (type.isAssignableFrom(commandSender.getClass())) {
+            if (!type.isAssignableFrom(commandSender.getClass())) {
                 if (commandSender instanceof Player && !type.isAssignableFrom(Player.class)) {
                     core.sendMessage(commandSender, "You must be a player for this to work");
                     return true;
                 }
             }
         }
+        
         Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), new CommandSender[]{commandSender}, core));
         return true;
     }
