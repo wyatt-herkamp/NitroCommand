@@ -33,7 +33,7 @@ public class NitroBukkitCommand extends Command {
         }
         
         for (Class<?> type : subCommand.method().getParameterTypes()) {
-            if (!type.isAssignableFrom(commandSender.getClass())) {
+            if (type.isAssignableFrom(commandSender.getClass())) {
                 if (commandSender instanceof Player && !type.isAssignableFrom(Player.class)) {
                     core.sendMessage(commandSender, "You must be a player for this to work");
                     return true;
