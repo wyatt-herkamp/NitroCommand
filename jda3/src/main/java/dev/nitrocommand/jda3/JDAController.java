@@ -31,6 +31,6 @@ public class JDAController {
     }
 
     public Object[] toArray() {
-        return new Object[]{event.getAuthor(), getTextChannel(), getGuild(), event, this};
+        return new Object[]{event.getAuthor(), getTextChannel(), getGuild(), event, this, getMessage()};
     }
 }
