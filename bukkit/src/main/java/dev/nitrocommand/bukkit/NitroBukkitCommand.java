@@ -8,10 +8,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class NitroBukkitCommand extends Command {
-    
+
     private final BukkitCommandCore core;
     private final NitroCommandObject object;
 
@@ -23,15 +24,21 @@ public class NitroBukkitCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        
+
         String message = String.join(" ", strings);
         NitroSubCommand subCommand = (strings.length == 0) ? object.getBaseExecutor() : CommandParser.locateSubCommand(message, object);
 
         if (subCommand == null) {
             subCommand = object.getBaseExecutor();
-            //TODO base command
+            return false;
         }
-        
+        if (!subCommand.requiredPermission().isEmpty()) {
+            if (!commandSender.hasPermission(subCommand.requiredPermission())) {
+                commandSender.sendMessage("Missing Permission Boy");
+                //TODO error missing permission
+                return false;
+            }
+        }
         for (Class<?> type : subCommand.method().getParameterTypes()) {
             if (type.isAssignableFrom(commandSender.getClass())) {
                 if (commandSender instanceof Player && !type.isAssignableFrom(Player.class)) {
@@ -40,8 +47,8 @@ public class NitroBukkitCommand extends Command {
                 }
             }
         }
-        
-        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), new CommandSender[]{commandSender}, core));
+
+        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), new Object[]{commandSender}, core));
         return true;
     }
 }
