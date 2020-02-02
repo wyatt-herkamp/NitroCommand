@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,9 +28,8 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
 
     @Override
     public String getName() {
-        return "JDA3";
+        return "JDA4";
     }
-
 
     @Override
     public void sendMessage(TextChannel senderObject, String message) {
@@ -37,7 +37,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
     }
 
     @Override
-    public void onEvent(GenericEvent event) {
+    public void onEvent(@NotNull GenericEvent event) {
         if (event instanceof GuildMessageReceivedEvent) {
             GuildMessageReceivedEvent messageEvent = (GuildMessageReceivedEvent) event;
             if (isCommand(messageEvent.getMessage().getContentRaw())) {
@@ -45,6 +45,10 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
                 executeCommand(stripContent, new JDAController(messageEvent));
             }
         }
+    }
+
+    public void setPrefix(String newPrefix) {
+        prefix = newPrefix;
     }
 
     private void executeCommand(String message, JDAController controller) {
