@@ -29,14 +29,12 @@
         </developer>
     </developers>
     <distributionManagement>
+
         <repository>
             <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-releases/</url>
+            <url>https://repo.kingtux.me/storages/storage0/kingtux-repo</url>
         </repository>
-        <snapshotRepository>
-            <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-snapshots/</url>
-        </snapshotRepository>
+
     </distributionManagement>
     <build>
         <plugins>
@@ -53,25 +51,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <serverId>kingtux-repo</serverId>
-                    <nexusUrl>https://repo.kingtux.me/repository/maven-public/</nexusUrl>
-                    <skipStaging>true</skipStaging>
-                </configuration>
             </plugin>
         </plugins>
     </build>

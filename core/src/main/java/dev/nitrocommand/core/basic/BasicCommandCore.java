@@ -51,11 +51,10 @@ public abstract class BasicCommandCore<T> implements CommandCore<T> {
             //Follow the rules dumbass
             throw new InvalidCommandException("All commands must have the annotation @NitroCommand at the type level.");
         }
-        Method baseMethod = MethodFinder.getFirstMethodWithAnnotation(object.getClass(), BaseCommand.class);
+        Method baseMethod =
+                MethodFinder.getFirstMethodWithAnnotation(object.getClass(), BaseCommand.class).orElseThrow(() -> new InvalidCommandException("All commands must have a method with the annotation @BaseCommand."));
 
-        if (baseMethod == null) {
-            throw new InvalidCommandException("All commands must have a method with the annotation @BaseCommand.");
-        }
+
         //Build the Command Object
         BasicCommandObject commandObject = new BasicCommandObject(command.command(), null, command.format(), object);
         commandObject.setBaseCommand(new BasicSubCommand(baseMethod, commandObject));

@@ -13,14 +13,11 @@
     <artifactId>jda4</artifactId>
     <version>1.0-SNAPSHOT</version>
     <distributionManagement>
+
         <repository>
             <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-releases/</url>
+            <url>https://repo.kingtux.me/storages/storage0/kingtux-repo</url>
         </repository>
-        <snapshotRepository>
-            <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/repository/maven-snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -40,39 +37,21 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
             </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <serverId>kingtux-repo</serverId>
-                    <nexusUrl>https://repo.kingtux.me/repository/maven-public/</nexusUrl>
-                    <skipStaging>true</skipStaging>
-                </configuration>
-            </plugin>
+
         </plugins>
     </build>
     <repositories>
         <repository>
             <id>jcenter</id>
             <name>jcenter-bintray</name>
-            <url>http://jcenter.bintray.com</url>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.0.0_45</version>
+            <version>4.1.1_108</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
