@@ -12,6 +12,10 @@ import java.util.Arrays;
  */
 public class Utils {
     public static Object[] getArguments(String message, NitroSubCommand command, Parameter[] parameters, Object[] otherArguments, CommandCore commandCore) {
+        return getArguments(message, message, command, parameters, otherArguments, commandCore);
+    }
+
+    public static Object[] getArguments(String message, String fullMessage, NitroSubCommand command, Parameter[] parameters, Object[] otherArguments, CommandCore commandCore) {
         final Object[] arguments = new Object[parameters.length];
         String format = command.formats()[0];
         for (int i = 0; i < parameters.length; i++) {
@@ -20,7 +24,7 @@ public class Utils {
                 if (argument != null) {
                     arguments[i] = parseVariableValue(argument.value(), message, format);
                 } else {
-                    arguments[i] = message;
+                    arguments[i] = fullMessage;
                 }
             } else if (parameters[i].getType() == String[].class) {
                 arguments[i] = message.split(" ");
@@ -88,7 +92,6 @@ public class Utils {
     public static String getVariableValue(String key, String message, String format) {
         int count = 0;
         int num = 0;
-
         for (int d = 0; d < format.length(); d++) {
             if (format.charAt(d) == '{') {
                 String formatCount = format.substring(d);
@@ -99,7 +102,7 @@ public class Utils {
                     num = count;
             }
         }
-        return message.split(" ")[num - 1];
+        return message.split(" ")[num];
     }
 
     public static boolean contructorExists(Class<?> t, Class<?>... clazzes) {

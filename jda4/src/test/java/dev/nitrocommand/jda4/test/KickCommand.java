@@ -21,6 +21,12 @@ public class KickCommand {
         channel.sendMessage(user.getName() + " was kicked: " + reason).queue();
     }
 
+    @SubCommand(format = "quiz {user}")
+    public void kick(@CommandArgument("user") String user, TextChannel channel) {
+
+        channel.sendMessage(user).queue();
+    }
+
     @SubCommand(format = "random")
     public void anotherMethod(JDAController controller) {
 

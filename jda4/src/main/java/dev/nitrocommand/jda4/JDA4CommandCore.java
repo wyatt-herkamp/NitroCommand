@@ -75,7 +75,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
                 return;
             }
         }
-        Utils.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), controller.toArray(), this));
+        Utils.executeCommand(command, Utils.getArguments(newMessage, message,command, command.method().getParameters(), controller.toArray(), this));
 
     }
 
