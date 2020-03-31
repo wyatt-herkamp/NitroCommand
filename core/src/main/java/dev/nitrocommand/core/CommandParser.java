@@ -26,6 +26,7 @@ public class CommandParser {
      * @return the SubCommand if found
      */
     public static NitroSubCommand locateSubCommand(String message, NitroCommandObject object) {
+
         NitroCMD.LOGGER.debug(String.format("Parsing: \"%s\".", message));
 
         if (message.length()==0||message.split(" ").length == 0 ) return null;

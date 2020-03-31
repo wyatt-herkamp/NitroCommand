@@ -53,7 +53,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
             NitroCMD.LOGGER.debug("No base command found: " + message);
             return;
         }
-        String newMessage = stripCommand(message).substring(commandBase.length());
+        String newMessage = stripCommand(message).substring(commandBase.length()+1);
         NitroCommandObject object = getCommand(commandBase);
         NitroSubCommand command = CommandParser.locateSubCommand(newMessage, object);
         if (command == null) {

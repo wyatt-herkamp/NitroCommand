@@ -21,7 +21,7 @@ This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) a
 <repositories>
         <repository>
             <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/storages/storage0/kingtux-repo</url>
+            <url>https://repo.kingtux.me/storages/maven/kingtux-repo</url>
         </repository>
 </repositories>
 
@@ -38,7 +38,7 @@ This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) a
 #### Gradle
 ```
 repositories {
-  maven { url 'https://repo.kingtux.me/storages/storage0/kingtux-repo' }
+  maven { url 'https://repo.kingtux.me/storages/maven/kingtux-repo' }
 }
 
 dependencies {
