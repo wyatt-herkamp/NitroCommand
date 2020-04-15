@@ -57,9 +57,9 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         NitroSubCommand command;
         String newMessage = stripCommand(message);
 
-        if(newMessage.length() == commandBase.length()){
+        if (newMessage.length() == commandBase.length()) {
             command = object.getBaseExecutor();
-        }else {
+        } else {
             newMessage = newMessage.substring(commandBase.length() + 1);
             command = CommandParser.locateSubCommand(newMessage, object);
         }
@@ -75,7 +75,12 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
                 return;
             }
         }
-        Utils.executeCommand(command, Utils.getArguments(newMessage, message,command, command.method().getParameters(), controller.toArray(), this));
+        Object[] objects = Utils.getArguments(newMessage, message, command, command.method().getParameters(), controller.toArray(), this);
+        if (objects == null) {
+            controller.getTextChannel().sendMessage("An Error has occurred. Good luck.").queue();
+            return;
+        }
+        Utils.executeCommand(command, objects);
 
     }
 
