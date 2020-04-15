@@ -1,6 +1,7 @@
 package dev.nitrocommand.core;
 
 import dev.nitrocommand.core.annotations.CommandArgument;
+import dev.nitrocommand.core.exceptions.ArgumentParserException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
@@ -39,7 +40,12 @@ public class Utils {
                             NitroCMD.LOGGER.error("Unable to get value for argument", e);
                         }
                     }
-                    arguments[i] = parser.parse(parseVariableValue(argument.value(), message, format));
+                    try {
+                        arguments[i] = parser.parse(parseVariableValue(argument.value(), message, format));
+                    } catch (ArgumentParserException e) {
+                        NitroCMD.LOGGER.error("Unable to parse Argument", e);
+                        return null;
+                    }
                 } else {
                     arguments[i] = getByType(otherArguments, parameters[i].getType());
                 }

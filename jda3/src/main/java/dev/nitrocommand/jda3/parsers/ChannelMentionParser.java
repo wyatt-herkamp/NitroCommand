@@ -2,6 +2,7 @@ package dev.nitrocommand.jda3.parsers;
 
 import dev.nitrocommand.core.ArgumentParser;
 import dev.nitrocommand.core.CommandCore;
+import dev.nitrocommand.core.exceptions.ArgumentParserException;
 import dev.nitrocommand.jda3.JDA3CommandCore;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -21,10 +22,10 @@ public class ChannelMentionParser implements ArgumentParser<TextChannel> {
     }
 
     @Override
-    public TextChannel parse(String s) {
+    public TextChannel parse(String s) throws ArgumentParserException{
         Matcher matcher = LONG_PATTERN.matcher(s);
         if (!matcher.matches()) {
-            return null;
+            throw new ArgumentParserException("String does not match pattern");
         }
 
         return commandCore.getJDA().getTextChannelById(matcher.group(2));

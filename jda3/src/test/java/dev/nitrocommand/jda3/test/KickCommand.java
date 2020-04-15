@@ -17,7 +17,7 @@ public class KickCommand {
     @NitroPermission(permission = "KICK_MEMBERS")
     @SubCommand(format = "{user} *")
     public void kick(@CommandArgument("*") String reason, @CommandArgument("user") User user, TextChannel channel, Message message) {
-        channel.getGuild().getController().kick(channel.getGuild().getMember(user), reason);
+        //channel.getGuild().getController().kick(channel.getGuild().getMember(user), reason);
         //.queue();
         channel.sendMessage(user.getName() + " was kicked: " + reason).queue();
     }
