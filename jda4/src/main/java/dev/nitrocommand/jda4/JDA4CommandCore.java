@@ -4,8 +4,8 @@ import dev.nitrocommand.core.*;
 import dev.nitrocommand.core.basic.BasicCommandCore;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements EventListener {
-    private JDA jda;
-    private String prefix = "/";
-    private Map<Long, String> customPrefixes = new HashMap<>();
+    private final JDA jda;
+    private final String prefix;
+    private final Map<Long, String> customPrefixes = new HashMap<>();
 
     public JDA4CommandCore(JDA jda, String prefix) {
         this.jda = jda;
@@ -30,6 +30,9 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         return "JDA3";
     }
 
+    public void addCustomPrefix(Guild guild, String prefix) {
+        customPrefixes.put(guild.getIdLong(), prefix);
+    }
 
     @Override
     public void sendMessage(TextChannel senderObject, String message) {
