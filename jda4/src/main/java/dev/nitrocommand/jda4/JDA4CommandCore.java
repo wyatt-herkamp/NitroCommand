@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements EventListener {
     private final JDA jda;
-    private final String prefix;
+    private String prefix;
     private final Map<Long, String> customPrefixes = new HashMap<>();
 
     public JDA4CommandCore(JDA jda, String prefix) {
@@ -27,7 +28,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
 
     @Override
     public String getName() {
-        return "JDA3";
+        return "JDA4";
     }
 
     public void addCustomPrefix(Guild guild, String prefix) {
@@ -40,7 +41,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
     }
 
     @Override
-    public void onEvent(GenericEvent event) {
+    public void onEvent(@NotNull GenericEvent event) {
         if (event instanceof GuildMessageReceivedEvent) {
             GuildMessageReceivedEvent messageEvent = (GuildMessageReceivedEvent) event;
             if (isCommand(messageEvent.getMessage().getContentRaw())) {
@@ -106,6 +107,10 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
             if (contentRaw.startsWith(s)) continue;
         }
         return false;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public JDA getJDA() {
