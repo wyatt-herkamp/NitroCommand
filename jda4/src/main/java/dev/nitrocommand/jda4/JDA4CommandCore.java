@@ -24,6 +24,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         this.jda = jda;
         this.prefix = prefix;
         jda.addEventListener(this);
+        System.out.println(NitroCMD.LOGGER.getName());
     }
 
     @Override

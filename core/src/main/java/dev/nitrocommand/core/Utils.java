@@ -82,33 +82,32 @@ public class Utils {
 
     public static String getWildCardValue(String message, String format) {
         //Parse for wildcard
+        String[] params = message.split(" ");
         String[] formatSplit = format.split(" ");
-        int d = 0;
-        for (int j = 0; j < formatSplit.length; j++) {
-            if (formatSplit[j].equals("*")) {
-                d = j + 1;
-                break;
+        for (int i = 0; i < formatSplit.length; i++) {
+            if (formatSplit[i].equals("*")) {
+                StringBuilder builder = new StringBuilder();
+                for (int i1 = i; i1 < params.length; i1++) {
+                    builder.append(params[i1]);
+                    if (i1 != params.length - 1)
+                        builder.append(" ");
+                }
+                return builder.toString();
             }
         }
-        String[] messageSplit = message.split(" ");
-        String[] stringTwo = Arrays.copyOfRange(messageSplit, d, messageSplit.length);
-        return String.join(" ", stringTwo);
+        return null;
     }
 
     public static String getVariableValue(String key, String message, String format) {
-        int count = 0;
-        int num = 0;
-        for (int d = 0; d < format.length(); d++) {
-            if (format.charAt(d) == '{') {
-                String formatCount = format.substring(d);
 
-                count++;
-
-                if (formatCount.startsWith("{" + key + "}"))
-                    num = count;
+        String[] params = message.split(" ");
+        String[] formatSplit = format.split(" ");
+        for (int i = 0; i < formatSplit.length; i++) {
+            if (formatSplit[i].equals("{" + key + "}")) {
+                return params[i];
             }
         }
-        return message.split(" ")[num];
+        return null;
     }
 
     public static boolean contructorExists(Class<?> t, Class<?>... clazzes) {

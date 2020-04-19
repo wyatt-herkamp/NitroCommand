@@ -24,6 +24,10 @@ public class BukkitCommandCore extends BasicCommandCore<CommandSender> {
 
     public BukkitCommandCore(Plugin plugin) {
         this.plugin = plugin;
+        if(NitroCMD.LOGGER == null || NitroCMD.LOGGER.getName().equals("NOP")){
+            System.out.println("Overriding NOP with Bukkit Logger");
+            NitroCMD.LOGGER = new BukkitBasedLogger(plugin);
+        }
     }
 
     @Override

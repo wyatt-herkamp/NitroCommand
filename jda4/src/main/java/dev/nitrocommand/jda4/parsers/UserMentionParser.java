@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserMentionParser implements ArgumentParser<User> {
-    private static final Pattern LONG_PATTERN = Pattern.compile("(<@!)(\\d+)(>)");
+    private static final Pattern LONG_PATTERN = Pattern.compile("(<@)(\\d+)(>)");
     private JDA4CommandCore commandCore;
 
     public UserMentionParser(CommandCore commandCore) {
@@ -22,9 +22,10 @@ public class UserMentionParser implements ArgumentParser<User> {
 
     @Override
     public User parse(String s) throws ArgumentParserException {
+        s = s.replace("!", "");
         Matcher matcher = LONG_PATTERN.matcher(s);
         if (!matcher.matches()) {
-            throw new ArgumentParserException("String does not match pattern "+ s);
+            throw new ArgumentParserException("String does not match pattern " + s);
         }
 
         return commandCore.getJDA().getUserById(matcher.group(2));

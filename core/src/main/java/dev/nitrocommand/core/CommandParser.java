@@ -51,7 +51,6 @@ public class CommandParser {
         for (NitroSubCommand sub : possibilities) {
             for (String format : sub.formats()) {
                 format = convertToRegex(/*firstFormat + " " + */format);
-
                 Matcher matcher = Pattern.compile(format).matcher(message);
                 if (!matcher.matches()) continue;
 
@@ -64,7 +63,7 @@ public class CommandParser {
                 cascade.put(l.apply(newMessage, format), sub);
             }
         }
-        
+
         if (cascade.isEmpty()) return null;
         
         return cascade.get(Collections.min(cascade.keySet()));
