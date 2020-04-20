@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
         </dependency>
 
         <!-- The first one is faster Reflection code; the second one does some cool stuff. -->
