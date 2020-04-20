@@ -8,6 +8,7 @@ import static dev.nitrocommand.core.test.TestKeys.*;
 public class TestMain {
     @Test
     public void testOne() {
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
         //Create Command Core
         TestCommandCore testCommandCore = new TestCommandCore();
 
