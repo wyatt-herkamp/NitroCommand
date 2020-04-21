@@ -1,5 +1,6 @@
 package dev.nitrocommand.core;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.*;
@@ -10,8 +11,18 @@ import java.util.regex.Pattern;
  * Subject to rename
  */
 public class CommandParser {
+    private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{(.*)}");
+    private static final String VARIABLE_KEY = "(.*[^ ])";
+
     public static String convertToRegex(String string) {
-        string = string.replaceAll("\\{(.*)}", "(.*[^ ])");
+        String[] stringSplit = string.split(" ");
+        for (int i = 0; i < stringSplit.length; i++) {
+            if (!stringSplit[i].startsWith("{") && !stringSplit[i].equals("*")) {
+                stringSplit[i] = "(" + stringSplit[i] + ")";
+            }
+        }
+        string = StringUtils.join(stringSplit, " ");
+        string = string.replaceAll("\\{(.*)}", VARIABLE_KEY);
 
         if (string.contains("*") && string.endsWith("*")) string = string.replaceAll("\\*", "(.*)");
 
@@ -29,13 +40,13 @@ public class CommandParser {
 
         NitroCMD.LOGGER.debug(String.format("Parsing: \"%s\".", message));
 
-        if (message.length()==0||message.split(" ").length == 0 ) return null;
+        if (message.length() == 0 || message.split(" ").length == 0) return null;
 
         List<NitroSubCommand> possibilities = new ArrayList<>();
         for (NitroSubCommand sub : object.subCommands()) {
             for (String string : sub.formats()) {
                 string = convertToRegex(string);
-
+                System.out.println("string = " + string);
                 if (message.matches(/*alias + " " + */string)) {
                     possibilities.add(sub);
                 }
@@ -45,27 +56,39 @@ public class CommandParser {
         if (possibilities.size() == 1) return possibilities.get(0);
 
         Map<Integer, NitroSubCommand> cascade = new HashMap<>();
-        
+
         LevenshteinDistance l = new LevenshteinDistance();
 
         for (NitroSubCommand sub : possibilities) {
             for (String format : sub.formats()) {
-                format = convertToRegex(/*firstFormat + " " + */format);
-                Matcher matcher = Pattern.compile(format).matcher(message);
+                String newFormat = convertToRegex(/*firstFormat + " " + */format);
+                Matcher matcher = Pattern.compile(newFormat).matcher(message);
                 if (!matcher.matches()) continue;
 
                 String newMessage = message;
-
+                String[] split = newMessage.split(" ");
+                if (format.endsWith("*")) {
+                    String[] formatSplit = format.split(" ");
+                    List<String> list = new ArrayList<>(Arrays.asList(formatSplit));
+                    list.remove(formatSplit.length - 1);
+                    List<String> messageSplit = new ArrayList<>(Arrays.asList(split));
+                    messageSplit.subList(list.size(), messageSplit.size()).clear();
+                    messageSplit.add("*");
+                    newMessage = StringUtils.join(messageSplit, " ");
+                }
                 for (int i = 1; i < matcher.groupCount() - 1; i++) {
                     newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
 
-                cascade.put(l.apply(newMessage, format), sub);
+                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
+                cascade.put(l.apply(newMessage, newFormat), sub);
             }
         }
-
+        cascade.forEach((integer, nitroSubCommand) -> {
+            System.out.println(integer + " " + nitroSubCommand.formats()[0]);
+        });
         if (cascade.isEmpty()) return null;
-        
+
         return cascade.get(Collections.min(cascade.keySet()));
     }
 

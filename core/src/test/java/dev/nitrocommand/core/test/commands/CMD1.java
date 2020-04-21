@@ -15,14 +15,14 @@ public class CMD1 {
     }
 
     @SubCommand(format = "{username} *")
-    public void msg(@CommandArgument("username") String username, @CommandArgument("*") String msg) throws Exception {
+    public void msg(@CommandArgument("username") String username, @CommandArgument("*") String msg) {
         System.out.println(username);
         assertEquals(USERNAME, username);
         assertEquals(MESSAGE, msg);
     }
 
     @SubCommand(format = "all *")
-    public void msgAll(@CommandArgument("*") String msg) throws Exception {
+    public void msgAll(@CommandArgument("*") String msg) {
         assertEquals(MESSAGE_ALL, msg);
     }
 }
