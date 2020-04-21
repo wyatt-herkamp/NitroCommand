@@ -46,7 +46,6 @@ public class CommandParser {
         for (NitroSubCommand sub : object.subCommands()) {
             for (String string : sub.formats()) {
                 string = convertToRegex(string);
-                System.out.println("string = " + string);
                 if (message.matches(/*alias + " " + */string)) {
                     possibilities.add(sub);
                 }
