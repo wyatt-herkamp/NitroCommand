@@ -123,6 +123,9 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
     }
 
     public void setPermissionHandler(MissingPermissionHandler permissionHandler) {
+        if (permissionHandler == null) {
+            throw new IllegalArgumentException("Must not be null");
+        }
         this.permissionHandler = permissionHandler;
     }
 }

@@ -32,23 +32,27 @@ public class NitroBukkitCommand extends Command {
             subCommand = object.getBaseExecutor();
             return false;
         }
-        if (!subCommand.requiredPermission().isEmpty()) {
-            if (!commandSender.hasPermission(subCommand.requiredPermission())) {
-                commandSender.sendMessage("Missing Permission Boy");
-                //TODO error missing permission
+        BukkitController controller = new BukkitController(commandSender, s, strings);
+        String permission = BukkitUtils.getPermissionForSubCommand(subCommand);
+
+        if (!permission.isEmpty()) {
+            if (!commandSender.hasPermission(permission)) {
+                core.getMissingPermissionHandler().handle(controller, permission);
                 return false;
             }
         }
+
+
         for (Class<?> type : subCommand.method().getParameterTypes()) {
             if (type.isAssignableFrom(commandSender.getClass())) {
                 if (commandSender instanceof Player && !type.isAssignableFrom(Player.class)) {
-                    core.sendMessage(commandSender, "You must be a player for this to work");
-                    return true;
+                    core.getMustBeAPlayerHandler().handle(controller);
+                    return false;
                 }
             }
         }
 
-        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), new Object[]{commandSender}, core));
+        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), controller.getArgs(), core));
         return true;
     }
 }

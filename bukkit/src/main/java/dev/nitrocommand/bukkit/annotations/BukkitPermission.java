@@ -1,11 +1,11 @@
-package dev.nitrocommand.core.annotations;
+package dev.nitrocommand.bukkit.annotations;
+
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 
-public @interface NitroPermission {
-
-    String permission();
+public @interface BukkitPermission {
+    String value();
 }
