@@ -80,7 +80,7 @@ public class CommandParser {
                     newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
 
-                System.out.println("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
+                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
                 cascade.put(l.apply(newMessage, newFormat), sub);
             }
         }
