@@ -4,5 +4,5 @@ import net.dv8tion.jda.api.Permission;
 
 @FunctionalInterface
 public interface MissingPermissionHandler {
-    void handle(String message, String newMessage, JDAController jdaController, Permission permission);
+    void handle(JDAController jdaController, Permission permission);
 }

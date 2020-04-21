@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         this.prefix = prefix;
         jda.addEventListener(this);
         System.out.println(NitroCMD.LOGGER.getName());
-        permissionHandler = (message, newMessage, jdaController, permission) -> {
+        permissionHandler = (jdaController, permission) -> {
             jdaController.getTextChannel().sendMessage("You are missing permission: " + permission.getName()).queue();
         };
     }
@@ -78,7 +77,7 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
 
         Permission permission = JDAUtils.getPermissionForSubCommand(command);
         if (!controller.getAuthor().hasPermission(permission)) {
-            permissionHandler.handle(newMessage, message, controller, permission);
+            permissionHandler.handle(controller, permission);
             return;
         }
         Object[] objects = Utils.getArguments(newMessage, message, command, command.method().getParameters(), controller.toArray(), this);
