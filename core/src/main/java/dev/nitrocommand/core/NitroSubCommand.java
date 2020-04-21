@@ -34,11 +34,5 @@ public interface NitroSubCommand {
      */
     NitroCommandObject command();
 
-    /**
-     * If present on the SubCommand level it is returned
-     * if not return the parent
-     *
-     * @return the required permission
-     */
-    String requiredPermission();
+
 }

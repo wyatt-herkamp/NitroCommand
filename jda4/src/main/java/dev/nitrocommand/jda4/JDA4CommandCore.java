@@ -19,12 +19,16 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
     private final JDA jda;
     private String prefix;
     private final Map<Long, String> customPrefixes = new HashMap<>();
+    private MissingPermissionHandler permissionHandler;
 
     public JDA4CommandCore(JDA jda, String prefix) {
         this.jda = jda;
         this.prefix = prefix;
         jda.addEventListener(this);
         System.out.println(NitroCMD.LOGGER.getName());
+        permissionHandler = (message, newMessage, jdaController, permission) -> {
+            jdaController.getTextChannel().sendMessage("You are missing permission: " + permission.getName()).queue();
+        };
     }
 
     @Override
@@ -71,14 +75,11 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         if (command == null) {
             command = object.getBaseExecutor();
         }
-        if (!command.requiredPermission().isEmpty()) {
-            NitroSubCommand finalCommand = command;
-            Permission permission = Arrays.stream(Permission.values()).filter(p -> p.name().equalsIgnoreCase(finalCommand.requiredPermission())).findFirst().orElse(Permission.MESSAGE_WRITE);
-            if (!controller.getAuthor().hasPermission(permission)) {
-                controller.getTextChannel().sendMessage("Missing Permission Boy").queue();
-                //TODO error missing permission
-                return;
-            }
+
+        Permission permission = JDAUtils.getPermissionForSubCommand(command);
+        if (!controller.getAuthor().hasPermission(permission)) {
+            permissionHandler.handle(newMessage, message, controller, permission);
+            return;
         }
         Object[] objects = Utils.getArguments(newMessage, message, command, command.method().getParameters(), controller.toArray(), this);
         if (objects == null) {
@@ -116,5 +117,13 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
 
     public JDA getJDA() {
         return jda;
+    }
+
+    public MissingPermissionHandler getPermissionHandler() {
+        return permissionHandler;
+    }
+
+    public void setPermissionHandler(MissingPermissionHandler permissionHandler) {
+        this.permissionHandler = permissionHandler;
     }
 }
