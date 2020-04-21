@@ -19,6 +19,7 @@ public class TestMain {
         //Test Commands
         testCommandCore.execute("msg " + USERNAME + " " + MESSAGE);
         testCommandCore.execute("msg all " + MESSAGE_ALL);
+        //testCommandCore.execute("msg all " + MESSAGE_ALL);
 
         //TODO use JUnit Tests to check if it works easily
     }
