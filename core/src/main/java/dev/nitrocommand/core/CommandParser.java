@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
  * Subject to rename
  */
 public class CommandParser {
+    private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{(.*)}");
+    private static final String VARIABLE_KEY = "(.*[^ ])";
+
     public static String convertToRegex(String string) {
         String[] stringSplit = string.split(" ");
         for (int i = 0; i < stringSplit.length; i++) {
@@ -19,7 +22,7 @@ public class CommandParser {
             }
         }
         string = StringUtils.join(stringSplit, " ");
-        string = string.replaceAll("\\{(.*)}", "(.*[^ ])");
+        string = string.replaceAll("\\{(.*)}", VARIABLE_KEY);
 
         if (string.contains("*") && string.endsWith("*")) string = string.replaceAll("\\*", "(.*)");
 
@@ -67,7 +70,6 @@ public class CommandParser {
                 if (format.endsWith("*")) {
                     String[] formatSplit = format.split(" ");
                     List<String> list = new ArrayList<>(Arrays.asList(formatSplit));
-                    System.out.println(list.size());
                     list.remove(formatSplit.length - 1);
                     List<String> messageSplit = new ArrayList<>(Arrays.asList(split));
                     messageSplit.subList(list.size(), messageSplit.size()).clear();
@@ -78,7 +80,7 @@ public class CommandParser {
                     newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
 
-                System.out.println("newMessage = " + newMessage);
+                System.out.println("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
                 cascade.put(l.apply(newMessage, newFormat), sub);
             }
         }
