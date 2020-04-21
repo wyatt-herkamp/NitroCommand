@@ -1,6 +1,8 @@
 package dev.nitrocommand.bukkit;
 
 import com.google.common.collect.Lists;
+import dev.nitrocommand.bukkit.handlers.BukkitMissingPermissionHandler;
+import dev.nitrocommand.bukkit.handlers.MustBeAPlayerHandler;
 import dev.nitrocommand.core.NitroCMD;
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
@@ -21,13 +23,19 @@ import java.util.List;
 
 public class BukkitCommandCore extends BasicCommandCore<CommandSender> {
     private Plugin plugin;
+    private BukkitMissingPermissionHandler missingPermissionHandler;
+    private MustBeAPlayerHandler mustBeAPlayerHandler;
 
     public BukkitCommandCore(Plugin plugin) {
         this.plugin = plugin;
-        if(NitroCMD.LOGGER == null || NitroCMD.LOGGER.getName().equals("NOP")){
+        if (NitroCMD.LOGGER == null || NitroCMD.LOGGER.getName().equals("NOP")) {
             System.out.println("Overriding NOP with Bukkit Logger");
             NitroCMD.LOGGER = new BukkitBasedLogger(plugin);
         }
+        missingPermissionHandler = (bukkitController, permission) -> {
+            bukkitController.getCommandSender().sendMessage("Missing Permission: " + permission);
+        };
+        mustBeAPlayerHandler = bukkitController -> bukkitController.getCommandSender().sendMessage("Must be a player");
     }
 
     @Override
@@ -59,5 +67,27 @@ public class BukkitCommandCore extends BasicCommandCore<CommandSender> {
     @Override
     public void sendMessage(CommandSender senderObject, String message) {
         senderObject.sendMessage(message);
+    }
+
+    public BukkitMissingPermissionHandler getMissingPermissionHandler() {
+        return missingPermissionHandler;
+    }
+
+    public void setMissingPermissionHandler(BukkitMissingPermissionHandler missingPermissionHandler) {
+        if (missingPermissionHandler == null) {
+            throw new IllegalArgumentException("Can not be null");
+        }
+        this.missingPermissionHandler = missingPermissionHandler;
+    }
+
+    public MustBeAPlayerHandler getMustBeAPlayerHandler() {
+        return mustBeAPlayerHandler;
+    }
+
+    public void setMustBeAPlayerHandler(MustBeAPlayerHandler mustBeAPlayerHandler) {
+        if (mustBeAPlayerHandler == null) {
+            throw new IllegalArgumentException("Can not be null");
+        }
+        this.mustBeAPlayerHandler = mustBeAPlayerHandler;
     }
 }

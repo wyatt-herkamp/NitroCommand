@@ -3,7 +3,6 @@ package dev.nitrocommand.core.basic;
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
 import dev.nitrocommand.core.annotations.BaseCommand;
-import dev.nitrocommand.core.annotations.NitroPermission;
 import dev.nitrocommand.core.annotations.SubCommand;
 import dev.nitrocommand.core.annotations.SubCommands;
 
@@ -14,7 +13,6 @@ public class BasicSubCommand implements NitroSubCommand {
     private String[] formats;
     private Method method;
     private NitroCommandObject command;
-    private String permission;
 
     public BasicSubCommand(Method method, NitroCommandObject command) {
         this.method = method;
@@ -33,11 +31,7 @@ public class BasicSubCommand implements NitroSubCommand {
             formats = new String[1];
             formats[0] = "";
         }
-        if (method.getAnnotation(NitroPermission.class) != null) {
-            permission = method.getAnnotation(NitroPermission.class).permission();
-        } else {
-            permission = command.getPermission();
-        }
+
     }
 
     @Override
@@ -60,10 +54,6 @@ public class BasicSubCommand implements NitroSubCommand {
         return command;
     }
 
-    @Override
-    public String requiredPermission() {
-        return permission;
-    }
 
     @Override
     public String toString() {
@@ -71,7 +61,6 @@ public class BasicSubCommand implements NitroSubCommand {
                 "formats=" + Arrays.toString(formats) +
                 ", method=" + method.getName() +
                 ", command=" + command.value().getClass().getSimpleName() +
-                ", permission='" + permission + '\'' +
                 '}';
     }
 }

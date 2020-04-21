@@ -2,7 +2,6 @@ package dev.nitrocommand.core.basic;
 
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
-import dev.nitrocommand.core.annotations.NitroPermission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +14,6 @@ public class BasicCommandObject implements NitroCommandObject {
     private String description, format;
     private NitroSubCommand baseCommand;
     private Object value;
-    private String permission = "";
 
     public BasicCommandObject(List<NitroSubCommand> subCommands, String[] aliases, String format, NitroSubCommand baseCommand, Object value) {
         this.subCommands = subCommands;
@@ -23,9 +21,7 @@ public class BasicCommandObject implements NitroCommandObject {
         this.format = format;
         this.baseCommand = baseCommand;
         this.value = value;
-        if (value.getClass().getAnnotation(NitroPermission.class) != null) {
-            permission = value.getClass().getAnnotation(NitroPermission.class).permission();
-        }
+
     }
 
     public BasicCommandObject(String[] aliases, NitroSubCommand baseCommand, String format, Object value) {
@@ -57,10 +53,7 @@ public class BasicCommandObject implements NitroCommandObject {
         return value;
     }
 
-    @Override
-    public String getPermission() {
-        return permission;
-    }
+
 
     @Override
     public String format() {
@@ -125,7 +118,6 @@ public class BasicCommandObject implements NitroCommandObject {
                 ", description='" + description + '\'' +
                 ", baseCommand=" + baseCommand +
                 ", value=" + value +
-                ", permission" + permission +
                 '}';
     }
 }
