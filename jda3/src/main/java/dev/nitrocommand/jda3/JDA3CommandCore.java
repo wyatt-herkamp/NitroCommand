@@ -58,15 +58,7 @@ public class JDA3CommandCore extends BasicCommandCore<TextChannel> implements Ev
         if (command == null) {
             command = object.getBaseExecutor();
         }
-        if (!command.requiredPermission().isEmpty()) {
-            NitroSubCommand finalCommand = command;
-            Permission permission = Arrays.stream(Permission.values()).filter(p -> p.name().equalsIgnoreCase(finalCommand.requiredPermission())).findFirst().orElse(Permission.MESSAGE_WRITE);
-            if (!controller.getAuthor().hasPermission(permission)) {
-                controller.getTextChannel().sendMessage("Missing Permission Boy").queue();
-                //TODO error missing permission
-                return;
-            }
-        }
+
         Utils.executeCommand(command, Utils.getArguments(message, command, command.method().getParameters(), controller.toArray(), this));
 
     }

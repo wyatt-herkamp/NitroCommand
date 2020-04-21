@@ -3,7 +3,6 @@ package dev.nitrocommand.core.basic;
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
 import dev.nitrocommand.core.annotations.BaseCommand;
-import dev.nitrocommand.core.annotations.NitroPermission;
 import dev.nitrocommand.core.annotations.SubCommand;
 import dev.nitrocommand.core.annotations.SubCommands;
 

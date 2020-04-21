@@ -14,7 +14,6 @@ public class KickCommand {
         channel.sendMessage("Please enter 2 more arguments!").queue();
     }
 
-    @NitroPermission(permission = "KICK_MEMBERS")
     @SubCommand(format = "{user} *")
     public void kick(@CommandArgument("*") String reason, @CommandArgument("user") User user, TextChannel channel, Message message) {
         //channel.getGuild().getController().kick(channel.getGuild().getMember(user), reason);
