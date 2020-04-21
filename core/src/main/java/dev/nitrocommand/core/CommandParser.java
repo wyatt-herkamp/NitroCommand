@@ -79,7 +79,7 @@ public class CommandParser {
                     newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
 
-                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
+                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format " + newFormat);
                 cascade.put(l.apply(newMessage, newFormat), sub);
             }
         }
@@ -91,4 +91,32 @@ public class CommandParser {
         return cascade.get(Collections.min(cascade.keySet()));
     }
 
+    public List<String> getOptions(String message, NitroCommandObject object) {
+        List<NitroSubCommand> options = new ArrayList<>();
+        for (NitroSubCommand sub : object.subCommands()) {
+            for (String string : sub.formats()) {
+                string = convertToRegex(string) + " (.*)";
+                if (message.matches(string)) {
+                    options.add(sub);
+                }
+            }
+        }
+        List<String> validO = new ArrayList<>();
+        String[] messsageSplit = message.split(" ");
+        for (NitroSubCommand option : options) {
+            String format = option.formats()[0];
+            String[] formatSplit = format.split(" ");
+            int startingPoint = messsageSplit.length;
+            for (int i = startingPoint; i < formatSplit.length; i++) {
+                Matcher matcher = VARIABLE_PATTERN.matcher(formatSplit[i]);
+                if(matcher.matches()){
+
+                }else{
+                    validO.add(formatSplit[i]);
+                }
+            }
+        }
+
+        return validO;
+    }
 }
