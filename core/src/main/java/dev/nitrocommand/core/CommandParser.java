@@ -1,5 +1,6 @@
 package dev.nitrocommand.core;
 
+import dev.nitrocommand.core.annotations.TabCompleter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
@@ -91,7 +92,7 @@ public class CommandParser {
         return cascade.get(Collections.min(cascade.keySet()));
     }
 
-    public List<String> getOptions(String message, NitroCommandObject object) {
+    public List<String> getOptions(String message, NitroCommandObject object, Object[] otherOptions) {
         List<NitroSubCommand> options = new ArrayList<>();
         for (NitroSubCommand sub : object.subCommands()) {
             for (String string : sub.formats()) {
@@ -109,9 +110,12 @@ public class CommandParser {
             int startingPoint = messsageSplit.length;
             for (int i = startingPoint; i < formatSplit.length; i++) {
                 Matcher matcher = VARIABLE_PATTERN.matcher(formatSplit[i]);
-                if(matcher.matches()){
-
-                }else{
+                if (matcher.matches()) {
+                    NitroTabCompleter tabCompleter = object.getTabCompleter(StringUtils.substringBetween(formatSplit[i], "{", "}"));
+                    if (tabCompleter != null) {
+                        validO.addAll(Utils.executeTabCompletion(tabCompleter, object, otherOptions));
+                    }
+                } else {
                     validO.add(formatSplit[i]);
                 }
             }

@@ -6,6 +6,7 @@ import dev.nitrocommand.core.exceptions.ArgumentParserException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * These are internal utils for NitroCommand
@@ -127,5 +128,8 @@ public class Utils {
         } catch (InvocationTargetException e) {
             NitroCMD.LOGGER.error("Unable to invoke " + command.methodName(), e.getCause());
         }
+    }
+
+    public static List<String> executeTabCompletion(NitroTabCompleter tabCompleter, NitroCommandObject object, Object[] otherOptions) {
     }
 }

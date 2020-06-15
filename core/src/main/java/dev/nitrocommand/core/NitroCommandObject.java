@@ -13,6 +13,8 @@ public interface NitroCommandObject extends Iterable<NitroSubCommand> {
      */
     List<NitroSubCommand> subCommands();
 
+    List<NitroTabCompleter> tabCompleters();
+
     /**
      * All aliases for this sub command
      *
@@ -32,6 +34,7 @@ public interface NitroCommandObject extends Iterable<NitroSubCommand> {
     Object value();
 
 
-
     String format();
+
+    NitroTabCompleter getTabCompleter(String substringBetween);
 }
