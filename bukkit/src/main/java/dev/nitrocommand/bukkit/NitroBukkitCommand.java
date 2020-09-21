@@ -8,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class NitroBukkitCommand extends Command {
@@ -24,7 +23,9 @@ public class NitroBukkitCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-
+        if (commandSender == null) {
+            System.out.println("WTF");
+        }
         String message = String.join(" ", strings);
         NitroSubCommand subCommand = (strings.length == 0) ? object.getBaseExecutor() : CommandParser.locateSubCommand(message, object);
 
@@ -51,8 +52,7 @@ public class NitroBukkitCommand extends Command {
                 }
             }
         }
-
-        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), controller.getArgs(), core));
+        Utils.executeCommand(subCommand, Utils.getArguments(message, subCommand, subCommand.method().getParameters(), controller.toArray(), core));
         return true;
     }
 }
