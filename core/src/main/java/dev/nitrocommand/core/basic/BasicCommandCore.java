@@ -11,7 +11,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class BasicCommandCore<T> implements CommandCore<T> {
     protected List<ArgumentParser> parsers = new ArrayList<>();
@@ -63,6 +62,13 @@ public abstract class BasicCommandCore<T> implements CommandCore<T> {
         for (Method method : object.getClass().getMethods()) {
             if (method.getAnnotation(SubCommand.class) != null || method.getAnnotation(SubCommands.class) != null) {
                 commandObject.add(new BasicSubCommand(method, commandObject));
+            }
+        }
+        if (supportsTabCompleter()) {
+            for (Method method : object.getClass().getMethods()) {
+                if (method.isAnnotationPresent(TabCompleter.class)) {
+                    commandObject.add(new BasicTabCompleter(method, commandObject));
+                }
             }
         }
         if (NitroCMD.LOGGER.isDebugEnabled())

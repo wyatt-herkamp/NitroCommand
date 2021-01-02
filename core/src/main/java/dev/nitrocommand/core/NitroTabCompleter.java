@@ -13,14 +13,14 @@ public interface NitroTabCompleter {
     /**
      * The method name
      *
-     * @return
+     * @return the method name
      */
     String methodName();
 
     /**
      * The actual method
      *
-     * @return
+     * @return the actual method
      */
     Method method();
 
