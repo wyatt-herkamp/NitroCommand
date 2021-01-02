@@ -1,13 +1,18 @@
 package dev.nitrocommand.bukkit;
 
+import dev.nitrocommand.bukkit.annotations.BukkitPermission;
 import dev.nitrocommand.core.CommandParser;
 import dev.nitrocommand.core.NitroCommandObject;
 import dev.nitrocommand.core.NitroSubCommand;
 import dev.nitrocommand.core.Utils;
+import me.kingtux.simpleannotation.MethodFinder;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class NitroBukkitCommand extends Command {
@@ -19,6 +24,20 @@ public class NitroBukkitCommand extends Command {
         super(name, description, usageMessage, aliases);
         this.core = core;
         this.object = commandObject;
+        registerPermissions();
+    }
+
+    private void registerPermissions() {
+        if (getClass().isAnnotationPresent(BukkitPermission.class)) {
+            BukkitPermission annotation = getClass().getAnnotation(BukkitPermission.class);
+            if (annotation.register())
+                Bukkit.getPluginManager().addPermission(new Permission(annotation.value(), annotation.description()));
+        }
+        for (Method method : MethodFinder.getAllMethodsWithAnnotation(getClass(), BukkitPermission.class)) {
+            BukkitPermission annotation = method.getAnnotation(BukkitPermission.class);
+            if (annotation.register())
+                Bukkit.getPluginManager().addPermission(new Permission(annotation.value(), annotation.description()));
+        }
     }
 
     @Override
