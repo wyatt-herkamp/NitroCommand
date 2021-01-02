@@ -121,6 +121,9 @@ public class Utils {
     }
 
     public static void executeCommand(NitroSubCommand command, Object... paramSet) {
+        Arrays.stream(paramSet).forEach(o -> {
+            NitroCMD.LOGGER.debug(o.getClass().getSimpleName());
+        });
         try {
             command.method().invoke(command.command().value(), paramSet);
         } catch (IllegalAccessException e) {
