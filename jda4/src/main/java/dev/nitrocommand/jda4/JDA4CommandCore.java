@@ -35,6 +35,11 @@ public class JDA4CommandCore extends BasicCommandCore<TextChannel> implements Ev
         return "JDA4";
     }
 
+    @Override
+    public boolean supportsTabCompleter() {
+        return false;
+    }
+
     public void addCustomPrefix(Guild guild, String prefix) {
         customPrefixes.put(guild.getIdLong(), prefix);
     }

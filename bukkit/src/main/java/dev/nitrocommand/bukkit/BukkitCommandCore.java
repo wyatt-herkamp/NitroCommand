@@ -1,19 +1,14 @@
 package dev.nitrocommand.bukkit;
 
-import com.google.common.collect.Lists;
 import dev.nitrocommand.bukkit.handlers.BukkitMissingPermissionHandler;
 import dev.nitrocommand.bukkit.handlers.MustBeAPlayerHandler;
 import dev.nitrocommand.core.NitroCMD;
 import dev.nitrocommand.core.NitroCommandObject;
-import dev.nitrocommand.core.NitroSubCommand;
-import dev.nitrocommand.core.annotations.NitroCommand;
 import dev.nitrocommand.core.basic.BasicCommandCore;
-import dev.nitrocommand.core.basic.BasicCommandObject;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
@@ -62,6 +57,11 @@ public class BukkitCommandCore extends BasicCommandCore<CommandSender> {
     @Override
     public String getName() {
         return "bukkit";
+    }
+
+    @Override
+    public boolean supportsTabCompleter() {
+        return true;
     }
 
     @Override

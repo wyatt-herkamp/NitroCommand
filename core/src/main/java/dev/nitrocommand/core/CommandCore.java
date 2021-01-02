@@ -27,6 +27,8 @@ public interface CommandCore<T> {
 
     String getName();
 
+    boolean supportsTabCompleter();
+
 
     List<NitroCommandObject> registeredCommands();
 
