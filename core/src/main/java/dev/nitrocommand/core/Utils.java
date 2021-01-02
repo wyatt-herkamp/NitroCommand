@@ -6,6 +6,7 @@ import dev.nitrocommand.core.exceptions.ArgumentParserException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -133,6 +134,17 @@ public class Utils {
         }
     }
 
-    public static List<String> executeTabCompletion(NitroTabCompleter tabCompleter, NitroCommandObject object, Object[] otherOptions) {
+    public static List<String> executeTabCompletion(NitroTabCompleter tabCompleter, NitroCommandObject object, Object... params) {
+        Arrays.stream(params).forEach(o -> {
+            NitroCMD.LOGGER.debug(o.getClass().getSimpleName());
+        });
+        try {
+            tabCompleter.method().invoke(tabCompleter.command().value(), params);
+        } catch (IllegalAccessException e) {
+            NitroCMD.LOGGER.error("Unable to access" + tabCompleter.methodName(), e);
+        } catch (InvocationTargetException e) {
+            NitroCMD.LOGGER.error("Unable to invoke " + tabCompleter.methodName(), e.getCause());
+        }
+        return Collections.emptyList();
     }
 }
