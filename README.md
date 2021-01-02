@@ -1,10 +1,7 @@
 # NitroCommand
 
 #### Implementations
-1. JDA3
-
-2. JDA4
-
+1. JDA4
 2. Bukkit
 
 #### Information
