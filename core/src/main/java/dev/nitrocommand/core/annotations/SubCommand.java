@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 /**
  * You can use multiple @SubCommand to make this method be used for multiple commands
- *
+ * @since 1.0
  */
 public @interface SubCommand {
     /**

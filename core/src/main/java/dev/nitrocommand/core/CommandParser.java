@@ -9,7 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Subject to rename
+ * This class handles are the parsing of commands.
+ *
+ * @since 1.0
  */
 public class CommandParser {
     private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{(.*)}");

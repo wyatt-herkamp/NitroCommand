@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * Add this type to a class you want AutoLoaded by CommandCore#registerAllCommands
+ *
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
