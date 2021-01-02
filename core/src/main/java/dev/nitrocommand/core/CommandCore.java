@@ -2,7 +2,18 @@ package dev.nitrocommand.core;
 
 import java.util.List;
 
+/**
+ * The central location for accessing NitroCommand.
+ *
+ * @param <T> the user object type.
+ */
 public interface CommandCore<T> {
+    /**
+     * Register a new command.
+     *
+     * @param object Command object.
+     * @return A new NitroCommandObject. Ignore unless you have a reason to use it.
+     */
     NitroCommandObject registerCommand(Object object);
 
     /**

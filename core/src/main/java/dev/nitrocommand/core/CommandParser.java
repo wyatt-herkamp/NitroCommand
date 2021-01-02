@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Subject to rename
+ * This class handles are the parsing of commands.
+ *
+ * @since 1.0
  */
 public class CommandParser {
     private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{(.*)}");
@@ -79,7 +81,7 @@ public class CommandParser {
                     newMessage = newMessage.replace(matcher.group(i), "(.*[^ ])");
                 }
 
-                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format "+ newFormat);
+                NitroCMD.LOGGER.debug("Message `" + message + "` " + "newMessage = " + newMessage + " Format " + newFormat);
                 cascade.put(l.apply(newMessage, newFormat), sub);
             }
         }
