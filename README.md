@@ -1,12 +1,10 @@
-# NitroCommand
+# NitroCommand [![Maven Version](https://mvnhelper.potatocorp.dev/kingtux-repo/dev.nitrocommand/core/badge.png)](https://mvnhelper.potatocorp.dev/kingtux-repo/dev.nitrocommand/core)
 
 #### Implementations
 1. JDA4
 2. Bukkit
 
 #### Information
-
-Discord: https://discord.gg/qtCKz4X
 
 NitroCommand is a simple, easy-to-use and extensible command framework.
 
@@ -20,10 +18,10 @@ This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) a
 #### Maven
 ```xml
 <repositories>
-        <repository>
-            <id>kingtux-repo</id>
-            <url>https://repo.kingtux.me/storages/maven/kingtux-repo</url>
-        </repository>
+    <repository>
+       <id>kingtux-repo</id>
+       <url>https://repo.kingtux.me/repository/maven-public/</url>
+    </repository>
 </repositories>
 
 <dependencies>
@@ -39,7 +37,7 @@ This is the succession to [TuxCommand](https://github.com/wherkamp/TuxCommand) a
 #### Gradle
 ```
 repositories {
-  maven { url 'https://repo.kingtux.me/storages/maven/kingtux-repo' }
+  maven { url 'https://repo.kingtux.me/repository/maven-public/' }
 }
 
 dependencies {
