@@ -19,7 +19,7 @@ public class TestMain {
     public static void main(String[] args) throws IOException, LoginException {
         Properties properties = new Properties();
         properties.load(new FileInputStream(new File(System.getProperty("user.home"), "discord-test.properties")));
-        JDA jda = new JDABuilder(properties.getProperty("token")).setActivity(Activity.playing("Testing NitroCommand")).build();
+        JDA jda = JDABuilder.createDefault(properties.getProperty("token")).setActivity(Activity.playing("Testing NitroCommand")).build();
         JDA4CommandCore core = new JDA4CommandCore(jda, "/");
 
         core.registerCommand(new KickCommand());
